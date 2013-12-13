@@ -225,24 +225,28 @@ em {
 }
 
 table {
-    width: 75%;
+    width: 90%;
     border: 1px solid #b3b3b3;
 }
 
 th {
-    font-weight: 500;
+    font-weight: bolder;
 }
 
 td {
     border: 1px solid #b3b3b3;
     text-align: center;
     font-weight: 300;
+    font-size: 17px;
+}
+
+td:hover{
+    background: #f2f2f2;
 }
 
 form {
     background: #f2f2f2;
     padding: 20px;
-
 }
 
 
