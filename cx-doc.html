@@ -11,6 +11,26 @@
         <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
         <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+        <script>
+            jQuery(document).ready(function() {
+                var offset = 220;
+                var duration = 500;
+                jQuery(window).scroll(function() {
+                    if (jQuery(this).scrollTop() > offset) {
+                        jQuery('.back-to-top').fadeIn(duration);
+                    } else {
+                        jQuery('.back-to-top').fadeOut(duration);
+                    }
+                });
+
+                jQuery('.back-to-top').click(function(event) {
+                    event.preventDefault();
+                    jQuery('html, body').animate({scrollTop: 0}, duration);
+                    return false;
+                });
+            });
+        </script>
         <title>Cx-lang</title>
     </head>
 
@@ -39,14 +59,13 @@
                         <a name="getting-started" class="anchor" href="#gettingstarted"><span class="octicon octicon-link"></span></a>Language Overview</h3>
                     <p>Cx syntax is borrowed heavily from C++, with a little flavoring from Ruby. Unlike Ruby, Cx does not treat everything as an object. However, any instance of a type (basic or user defined) may include standard member functions. This includes function return values.<br>
                         <br>The basic language mechanics are currently in development and are subject to change.</p>
-
                     <table>
                         <tr><td><a href="#basictypes">Basic Types</a>
                             <td><a href="#operators">Operators</a>
                             <td><a href="#expressions">Expressions</a>
                             <td><a href="#functions">Functions</a>
                             <td><a href="#keywords">Keywords</a>
-                            <td> <a href="#statements">Statements</a>
+                            <td><a href="#statements">Statements</a>
                         </tr><tr>
                             <td><a href="#namespace">Namespace</a>
                             <td><a href="#scope">Scoping Rules</a>
@@ -64,33 +83,270 @@
                         </tr>
                     </table><br>
 
-                    <h3>
-                        <a name="basic-types" class="anchor" href="#basictypes"><span class="octicon octicon-link"></span></a>Basic Types</h3>
+                    <h2><a id="basictypes"></a>Basic Types</h2>
                     <table>
                         <tr><th>Name</th><th>Type</th><th>Size</th><th>Value Range</th></tr>
                         <tr>
-                            <td>bool</td><td>Unsigned integer</td><td>8Bits</td><td>true or false</td>
+                            <td><strong>bool</strong></td><td>Unsigned integer</td><td>8Bits</td><td>true or false</td>
                         </tr>
                         <tr>
-                            <td>byte</td><td>Unsigned integer</td><td>8Bits</td><td>0 to 255</td>
+                            <td><strong>byte</strong></td><td>Unsigned integer</td><td>8Bits</td><td>0 to 255</td>
                         </tr>
                         <tr>
-                            <td>char</td><td>Signed character</td><td>8Bits</td><td>-128 to 127</td>
+                            <td><strong>char</strong></td><td>Signed character</td><td>8Bits</td><td>-128 to 127</td>
                         </tr>
                         <tr>
-                            <td>float</td><td>Floating point</td><td>32Bits</td><td>3.4E +/- 38 (7 digits)</td>
+                            <td><strong>float</strong></td><td>Floating point</td><td>32Bits</td><td>3.4E +/- 38 (7 digits)</td>
                         </tr>
                         <tr>
-                            <td>int</td><td>Signed integer</td><td>32Bits</td><td>-2147483648 to 2147483647</td>
+                            <td><strong>int</strong></td><td>Signed integer</td><td>32Bits</td><td>-2147483648 to 2147483647</td>
                         </tr>
                         <tr>
-                            <td>wchar</td><td>Wide character</td><td>16Bits</td><td>0 to 65,535</td>
+                            <td><strong>wchar</strong></td><td>Wide character</td><td>16Bits</td><td>0 to 65,535</td>
                         </tr>
                         <tr>
-                            <td>void</td><td>Non-value return</td><td>0Bits</td><td>null</td>
+                            <td><strong>void</strong></td><td>Non-value return</td><td>0Bits</td><td>null</td>
                         </tr>
+                    </table><br>
+
+                    <h2><a id="operators"></a>Operators</h2>
+
+                    <h3>Arithmetic</h3>
+                    <p>The five arithmetical operations supported by the Cx language are:</p>
+
+                    <table>
+                        <tr><td><strong>+</strong></td><td>Addition</td></tr>
+                        <tr><td><strong>-</strong></td><td>Subtraction</td></tr>
+                        <tr><td><strong>*</strong></td><td>Multiplication</td></tr>
+                        <tr><td><strong>/</strong></td><td>Division</td></tr>
+                        <tr><td><strong>%</strong></td><td>Modulo</td></tr>
                     </table>
+                    <br>
+                    <p>The addition operator <code>+</code> has special meaning for array types. Having an array on either side of
+                        this binary operator will concatenate both side of the expression into a allocated temporary value.
+                        Both sides of the expression must be of the same base type, e.g. an array of char elements is compatible with a primitive char type, or 2 arrays of int elements would also be OK.</p>
+
+                    <pre class="prettyprint lang-cpp">
+// gets() and string allocation(+) example
+
+#include cxstdio
+
+int main () {
+
+    do{
+        puts("Please enter your name: ");
+        // read string until '\n'
+        char *in = gets();
+    }while(!in);
+
+    char *t1 = "beep";
+    char *t2 = "-boop";
+    char *greet = "Hello " + in + ", you a bad " + t1 + t2 + '!';
+
+    puts(greet);
+
+    return 0;
+}</pre>
+
+                    <h3>Assignment</h3>
+                    <p>The assignment operator assigns a value to a variable. The assignment operator
+                        has diferent behavior for primitive versus array types.</p>
+
+                    <table>
+                        <tr><td><strong>=</strong></td><td>Assignment</td></tr>
+                    </table>
+
+                    <pre class="prettyprint lang-cpp">
+// Simple copy assignment
+char c = 'a';
+char b = c;
+
+// Reallocation assignment on array2
+int *int_array1 = {1,2,3,4,5,6,7,8,9,0};
+int *int_array2 = {3,2,1};
+
+// int_array2 gets reallocated with the contents of array1
+int_array2 = int_array1;
+                    </pre>
+
+                    <h3>Compound Assignment</h3><p>
+                        When we want to modify the value of a variable by performing an operation on the
+                        value currently stored in that variable we can use compound assignment
+                        operators.</p><br>
+
+                    <table>
+                        <tr><td><strong>+=</strong></td><td>Compound Addition</td></tr>
+                        <tr><td><strong>-=</strong></td><td>Compound Subtraction</td></tr>
+                        <tr><td><strong>*=</strong></td><td>Compound Multiplication</td></tr>
+                        <tr><td><strong>/=</strong></td><td>Compound Division</td></tr>
+                        <tr><td><strong>%=</strong></td><td>Compound Modulo</td></tr>
+                        <tr><td><strong>>>=</strong></td><td>Compound Shift Right</td></tr>
+                        <tr><td><strong><<=</strong></td><td>Compound Shift Left</td></tr>
+                        <tr><td><strong>&=</strong></td><td>Compound AND</td></tr>
+                        <tr><td><strong>^=</strong></td><td>Compound XOR</td></tr>
+                        <tr><td><strong>|=</strong></td><td>Compound OR</td></tr>
+                    </table><br>
+                    <table><tr><th>expression</th><th>is equivalent to</th></tr>
+                        <tr><td>value += increase;</td><td>value = value + increase;</td></tr>
+                        <tr><td>a -= 5;</td><td>a = a - 5;</td></tr>
+                        <tr><td>a /= b;</td><td>a = a / b;</td></tr>
+                        <tr><td>price *= units + 1;</td><td>price = price * (units + 1);</td></tr>
+                    </table><br>
+
+                    <p>The <code><strong>+=</strong></code> operator has special uses for an array of primitive types. The following will perform
+                        a reallocation for <code><strong>array1</strong></code> and compound assign the contents of <code><strong>array2</strong></code>.</p>
+
+                    <code><strong>array1 += array2</strong></code>
+
+                    <p><br>If the right hand side is a primitive type of the left hand side array, the operator
+                        will perform the same operation but for the single element.</p>
+
+                    <code><strong>array1 += 'c'</strong></code>
+
+                    <pre class="prettyprint lang-cpp">
+#include cxstdio
+
+// Array compound assignment example
+
+int main(){
+
+    // character array type
+    char *string = "this is a really long string for you!!!!!";
+
+    // All arrays perform compound assignment via += operator.
+    string += "... this was allocated and appended";
+
+    puts(string);
+
+    return 0;
+}</pre>
+
+                    <h3>Increase and Decrease</h3>
+                    <p>The increase operator <code><strong>++</strong></code> and the decrease operator <code><strong>--</strong></code> increase or
+                        reduce by one the value stored in a variable. They are equivalent
+                        to <code><strong>+=1</strong></code> and to <code><strong>-=1</strong></code>, respectively.</p>
+                    <table>
+                        <tr><td><strong>++</strong></td><td>Increase</td></tr>
+                        <tr><td><strong>--</strong></td><td>Decrease</td></tr>
+                    </table>
+
+                    <pre class="prettyprint lang-cpp">
+int i = 0;
+i++;	// i is now equal to 1
+                    </pre>
+
+                    <h3>Relational and Equality</h3>
+                    <p>In order to evaluate a comparison between two expressions we can use the
+                        relational and equality operators. The result of a relational operation is a
+                        Boolean value that can only be true or false, according to its Boolean result.</p>
+                    <table>
+                        <tr><td><strong>==</strong></td><td>Equal</td></tr>
+                        <tr><td><strong>!=</strong></td><td>Not Equal</td></tr>
+                        <tr><td><strong>&gt</strong></td><td>Grater than</td></tr>
+                        <tr><td><strong>&lt</strong></td><td>Less than</td></tr>
+                        <tr><td><strong>&gt=</strong></td><td>Greater than of equal to</td></tr>
+                        <tr><td><strong>&lt=</strong></td><td>Not Equal</td></tr>
+                    </table>
+
+
+                    <pre class="prettyprint lang-cpp">
+// equal is assigned true based on the expression
+bool equal = (1 == 1);
+
+// i is assigned a 0(zero) from the false expression
+int i = (1 > 1);
+                    </pre>
+
+                    <h3>Logical</h3>
+                    <table>
+                        <tr><td><strong>!</strong></td><td>Not</td></tr>
+                        <tr><td><strong>&&</strong></td><td>And</td></tr>
+                        <tr><td><strong>||</strong></td><td>Or</td></tr>
+                    </table><br>
+
+
+                    <h3><code><strong>!</strong></code>NOT Operator</h3>
+                    <p>The Operator <code><strong>!</strong></code> is the Cx operator to perform the Boolean operation <strong>NOT</strong>, it has only one operand, located at its right, and the only thing that it does is to inverse the value of it, producing false if its operand is true and true if its operand is false. Basically, it returns the opposite Boolean value of evaluating its operand. For example:</p>
+
+                    <pre class="prettyprint lang-cpp">
+!(true expression) == false
+!(false expression) == true</pre>
+
+                    <h3><code><strong>&&</strong></code>AND Operator</h3>
+                    <p>The logical operators <code><strong>&&</strong></code> and <code><strong>||</strong></code> are used when evaluating two expressions to obtain a single relational result. The operator <code><strong>&&</strong></code> corresponds with Boolean logical operation <strong>AND</strong>. This operation results true if both its two operands are true, and false otherwise. The following panel shows the result of operator <code><strong>&&</strong></code> evaluating the expression <code><strong>a && b</strong></code>:</p>
+
+                    <table><tr><th>a</th><th>b</th><th>a && b</th>
+                        </tr>
+                        <tr><td>true</td><td>true</td><td>true</td></tr>
+                        <tr><td>true</td><td>false</td><td>false</td></tr>
+                        <tr><td>false</td><td>true</td><td>false</td></tr>
+                        <tr><td>false</td><td>false</td><td>false</td></tr>
+                    </table><br>
+
+                    <h3><code><strong>||</strong></code>OR Operator</h3>
+                    <p>The operator <code><strong>||</strong></code> corresponds with Boolean logical operation <strong>OR</strong>. This operation results true if either one of its two operands is true, thus being false only when both operands are false themselves. Here are the possible results of <code><strong>a || b</strong></code>:
+                    <table><tr><th>a</th><th>b</th><th>a || b</th>
+                        </tr>
+                        <tr><td>true</td><td>true</td><td>true</td></tr>
+                        <tr><td>true</td><td>false</td><td>true</td></tr>
+                        <tr><td>false</td><td>true</td><td>true</td></tr>
+                        <tr><td>false</td><td>false</td><td>false</td></tr>
+                    </table><br>
+
+                    <h3>Bitwise</h3>
+                    <p>Bitwise operators modify variables considering the bit patterns that represent the values they store.</p>
+
+                                        <table>
+                        <tr><td><strong>&</strong></td><td>Bitwise AND</td></tr>
+                        <tr><td><strong>|</strong></td><td>Bitwise OR</td></tr>
+                        <tr><td><strong>^</strong></td><td>Bitwise XOR</td></tr>
+                        <tr><td><strong>~</strong></td><td>Bitwise NOT</td></tr>
+                        <tr><td><strong>&lt&lt</strong></td><td>Bitwise SHL</td></tr>
+                        <tr><td><strong>&gt&gt</strong></td><td>Bitwise SHR</td></tr>
+                                        </table><br>
+
+<pre class="prettyprint lang-cpp">
+/* Bitwise operation example.
+ * Binary numeral system (base 2) square root (integer) */
+int isqrt(int num) {
+    int res = 0;
+    int bit = 1 << 14;
+
+    // "bit" starts at the highest power of four <= the argument.
+    while (bit > num) bit >>= 2;
+
+    while (bit != 0) {
+        if (num >= res + bit) {
+            num -= res + bit;
+            res = (res >> 1) + bit;
+        }else{
+            res >>= 1;
+        }
+
+        bit >>= 2;
+    }
+
+    return res;
+}</pre>
+
+                    <h2><a id="expressions"></a>Expressions</h2>
+                    <h2><a id="functions"></a>Functions</h2>
+                    <h2><a id="keywords"></a>Keywords</h2>
+                    <h2><a id="namespace"></a>Namespace</h2>
+                    <h2><a id="scope"></a>Scoping Rules</h2>
+                    <h2><a id="classes"></a>Classes</h2>
+                    <h2><a id="stdmembers"></a>Standard Type Members</h2>
+                    <h2><a id="iterators"></a>Iterators</h2>
+                    <h2><a id="directives"></a>Directives</h2>
+                    <h2><a id="stdlib"></a>Standard Library</h2>
+                    <h2><a id="kernellib"></a>System Library</h2>
+                    <h2><a id="debugging"></a>Debugging</h2>
+                    <h2><a id="extending"></a>Extending</h2>
+                    <h2><a id="tutorial"></a>Tutorials</h2>
+                    <h2><a id="examples"></a>Examples</h2>
+
                 </section>
+                <a href="#" class="back-to-top">Back to Top</a>
                 <footer>
                     Cx is maintained by <a href="https://github.com/ahebert">Aaron Hebert</a><br>
                 </footer>

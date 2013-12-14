@@ -225,7 +225,7 @@ em {
 }
 
 table {
-    width: 90%;
+    width: auto;
     border: 1px solid #b3b3b3;
 }
 
@@ -238,6 +238,8 @@ td {
     text-align: center;
     font-weight: 300;
     font-size: 17px;
+    min-width: 35px;
+    padding: 3px;
 }
 
 td:hover{
@@ -434,4 +436,22 @@ li.L1,li.L3,li.L5,li.L7,li.L9 { }
     pre .tag, code .tag { color: #006; font-weight: bold; }
     pre .atn, code .atn { color: #404; }
     pre .atv, code .atv { color: #060; }
+}
+
+.back-to-top {
+    position: fixed;
+    bottom: 2em;
+    right: 0px;
+    text-decoration: none;
+    color: #000000;
+    background-color: rgba(235, 235, 235, 0.80);
+    font-size: 12px;
+    padding: 1em;
+    display: none;
+    border-radius: 35px;
+    font-weight: bold;
+}
+
+.back-to-top:hover {    
+    background-color: rgba(135, 135, 135, 0.50);
 }
