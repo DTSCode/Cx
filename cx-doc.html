@@ -12,6 +12,15 @@
         <![endif]-->
         <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+
+        <link href="stylesheets/style.css" type="text/css" rel="stylesheet">
+        <link href="stylesheets/html5-reset.css" type="text/css" rel="stylesheet">
+
+        <!-- begin JS -->
+        <!--<script src="js/jquery-1.7.1.min.js" type="text/javascript"></script> -->
+        <script src="js/modernizr-2.0.6.min.js" type="text/javascript"></script> 
+        <!-- end JS -->
+
         <script>
             jQuery(document).ready(function() {
                 var offset = 220;
@@ -47,18 +56,29 @@
                     <a href="https://github.com/ahebert/Cx/zipball/master" id="download-zip" class="button"><span></span></a>
                     <a href="https://github.com/ahebert/Cx/tarball/master" id="download-tar-gz" class="button"><span></span></a>
                     <a href="https://github.com/ahebert/Cx" id="view-on-github" class="button"><span></span></a>
+                    <!-- begin navigation -->
+                    <nav id="navigation">
+                        <ul>
+                            <li class="nav"><a href="index.html">Home</a></li>
+                            <li class="nav"><a href="#">Services</a></li>
+                            <li class="nav"><a href="#">Portfolio</a></li>
+                            <li class="nav"><a href="#">About</a></li>
+                            <li class="nav"><a href="#">Blog</a></li>
+                            <li class="nav"><a href="#">Contact</a></li>
+                        </ul>
+                    </nav>
+                    <!-- end navigation -->
                 </section>
 
                 <hr>
 
                 <section id="main_content">
+
+
+
                     <h1>
                         <a name="cx-docs" class="anchor" href="#cx-docs"><span class="octicon octicon-link"></span></a>Cx-docs</h1>
                     <p>Here you should find more details about the language itself. Much of what may appear here may be incomplete or not implemented.</p>
-                    <h3>
-                        <a name="getting-started" class="anchor" href="#gettingstarted"><span class="octicon octicon-link"></span></a>Language Overview</h3>
-                    <p>Cx syntax is borrowed heavily from C++, with a little flavoring from Ruby. Unlike Ruby, Cx does not treat everything as an object. However, any instance of a type (basic or user defined) may include standard member functions. This includes function return values.<br>
-                        <br>The basic language mechanics are currently in development and are subject to change.</p>
                     <table>
                         <tr><td><a href="#basictypes">Basic Types</a>
                             <td><a href="#operators">Operators</a>
@@ -67,8 +87,8 @@
                             <td><a href="#keywords">Keywords</a>
                             <td><a href="#statements">Statements</a>
                         </tr><tr>
+                            <td><a href="#scope">Scope</a>
                             <td><a href="#namespace">Namespace</a>
-                            <td><a href="#scope">Scoping Rules</a>
                             <td><a href="#classes">Classes</a>
                             <td><a href="#stdmembers">Standard Type Members</a>
                             <td><a href="#iterators">Iterators</a></td>
@@ -82,6 +102,21 @@
                             <td><a href="#examples">Examples</a></td>
                         </tr>
                     </table><br>
+                    <h3>
+                        <a name="getting-started" class="anchor" href="#gettingstarted"><span class="octicon octicon-link"></span></a>Language Overview</h3>
+                    <p>Cx syntax is borrowed heavily from C++, with a little flavoring from Ruby. Unlike Ruby, Cx does not treat everything as an object. However, any instance of a type (basic or user defined) may include standard member functions. This includes function return values.<br>
+                        <br>One of the most noticeable differences from other interpreted languages is that Cx has a <code><strong>main</strong></code> entry point. This means that all Cx scripts must define a function named <code>main</code> unless they are included as a library.</p>
+                    <pre class="prettyprint lang-cpp">
+/* Comment blocks 
+ * can span 
+ * multiple lines
+ */
+
+// Single line comments
+int main(){
+    return 0;                    
+}</pre>
+                    <br><p>The basic language mechanics are currently in development and are subject to change.</p>
 
                     <h2><a id="basictypes"></a>Basic Types</h2>
                     <table>
@@ -110,8 +145,18 @@
                     </table><br>
 
                     <h2><a id="operators"></a>Operators</h2>
+                    <table>
+                        <tr><td><a href="#arithmetic">Arithmetic</a>
+                            <td><a href="#assignment">Assignment</a>
+                            <td><a href="#compound">Compound Assignment</a>
+                            <td><a href="#increase-decrease">Increase and Decrease</a>
+                            <td><a href="#relational">Relational</a>
+                            <td><a href="#logical">Logical</a>
+                            <td><a href="#bitwise">Bitwise</a>
+                        </tr>
+                    </table><br>
 
-                    <h3>Arithmetic</h3>
+                    <h3><a id="arithmetic"></a>Arithmetic</h3>
                     <p>The five arithmetical operations supported by the Cx language are:</p>
 
                     <table>
@@ -148,7 +193,7 @@ int main () {
     return 0;
 }</pre>
 
-                    <h3>Assignment</h3>
+                    <h3><a id="assignment"></a>Assignment</h3>
                     <p>The assignment operator assigns a value to a variable. The assignment operator
                         has diferent behavior for primitive versus array types.</p>
 
@@ -166,10 +211,9 @@ int *int_array1 = {1,2,3,4,5,6,7,8,9,0};
 int *int_array2 = {3,2,1};
 
 // int_array2 gets reallocated with the contents of array1
-int_array2 = int_array1;
-                    </pre>
+int_array2 = int_array1;</pre>
 
-                    <h3>Compound Assignment</h3><p>
+                    <h3><a id="compound"></a>Compound Assignment</h3><p>
                         When we want to modify the value of a variable by performing an operation on the
                         value currently stored in that variable we can use compound assignment
                         operators.</p><br>
@@ -221,7 +265,7 @@ int main(){
     return 0;
 }</pre>
 
-                    <h3>Increase and Decrease</h3>
+                    <h3><a id="increase-decrease"></a>Increase and Decrease</h3>
                     <p>The increase operator <code><strong>++</strong></code> and the decrease operator <code><strong>--</strong></code> increase or
                         reduce by one the value stored in a variable. They are equivalent
                         to <code><strong>+=1</strong></code> and to <code><strong>-=1</strong></code>, respectively.</p>
@@ -230,12 +274,10 @@ int main(){
                         <tr><td><strong>--</strong></td><td>Decrease</td></tr>
                     </table>
 
-                    <pre class="prettyprint lang-cpp">
-int i = 0;
-i++;	// i is now equal to 1
-                    </pre>
+                    <pre class="prettyprint lang-cpp">int i = 0;
+i++;	// i is now equal to 1</pre>
 
-                    <h3>Relational and Equality</h3>
+                    <h3><a id="relational"></a>Relational and Equality</h3>
                     <p>In order to evaluate a comparison between two expressions we can use the
                         relational and equality operators. The result of a relational operation is a
                         Boolean value that can only be true or false, according to its Boolean result.</p>
@@ -254,10 +296,9 @@ i++;	// i is now equal to 1
 bool equal = (1 == 1);
 
 // i is assigned a 0(zero) from the false expression
-int i = (1 > 1);
-                    </pre>
+int i = (1 > 1);</pre>
 
-                    <h3>Logical</h3>
+                    <h3><a id="logical"></a>Logical</h3>
                     <table>
                         <tr><td><strong>!</strong></td><td>Not</td></tr>
                         <tr><td><strong>&&</strong></td><td>And</td></tr>
@@ -293,19 +334,19 @@ int i = (1 > 1);
                         <tr><td>false</td><td>false</td><td>false</td></tr>
                     </table><br>
 
-                    <h3>Bitwise</h3>
+                    <h3><a id="bitwise"></a>Bitwise</h3>
                     <p>Bitwise operators modify variables considering the bit patterns that represent the values they store.</p>
 
-                                        <table>
+                    <table>
                         <tr><td><strong>&</strong></td><td>Bitwise AND</td></tr>
                         <tr><td><strong>|</strong></td><td>Bitwise OR</td></tr>
                         <tr><td><strong>^</strong></td><td>Bitwise XOR</td></tr>
                         <tr><td><strong>~</strong></td><td>Bitwise NOT</td></tr>
                         <tr><td><strong>&lt&lt</strong></td><td>Bitwise SHL</td></tr>
                         <tr><td><strong>&gt&gt</strong></td><td>Bitwise SHR</td></tr>
-                                        </table><br>
+                    </table><br>
 
-<pre class="prettyprint lang-cpp">
+                    <pre class="prettyprint lang-cpp">
 /* Bitwise operation example.
  * Binary numeral system (base 2) square root (integer) */
 int isqrt(int num) {
@@ -330,10 +371,243 @@ int isqrt(int num) {
 }</pre>
 
                     <h2><a id="expressions"></a>Expressions</h2>
+                    <p>Here is the order of operations starting from first evaluation to last.</p>
+
+                    <table>
+
+                        <tr>
+                            <th style="text-align: left"> Precedence
+                            </th>
+                            <th style="text-align: center"> Operator
+                            </th>
+                            <th style="text-align: center"> Description
+                            </th>
+                            <th style="text-align: left"> Associativity
+                            </th></tr>
+                        <tr>
+                            <th> 1
+                            </th>
+                            <td> <code>::</code>
+                            </td>
+                            <td> Scope resolution
+                            </td>
+                            <td style="vertical-align: top" rowspan="6"> Left-to-right
+                            </td></tr>
+                        <tr>
+                            <th rowspan="5"> 2
+                            </th>
+                            <td style="border-bottom-style: none"> <code>++</code>   <code>--</code>
+                            </td>
+                            <td style="border-bottom-style: none"> Suffix/postfix increment and decrement
+                            </td></tr>
+                        <tr>
+                            <td style="border-bottom-style: none; border-top-style: none"> <code>()</code>
+                            </td>
+                            <td style="border-bottom-style: none; border-top-style: none"> Function call
+                            </td></tr>
+                        <tr>
+                            <td style="border-bottom-style: none; border-top-style: none"> <code>[]</code>
+                            </td>
+                            <td style="border-bottom-style: none; border-top-style: none"> Array subscripting
+                            </td></tr>
+                        <tr>
+                            <td style="border-bottom-style: none; border-top-style: none"> <code>.</code>
+                            </td>
+                            <td style="border-bottom-style: none; border-top-style: none"> Element selection by reference
+                            </td></tr>
+                        <tr>
+                            <td style="border-bottom-style: none; border-top-style: none"> <code>-&gt;</code>
+                            </td>
+                            <td style="border-bottom-style: none; border-top-style: none"> Element selection through pointer
+                            </td></tr>
+                        <tr>
+                            <th rowspan="9"> 3
+                            </th>
+                            <td style="border-bottom-style: none"> <code>++</code>   <code>--</code>
+                            </td>
+                            <td style="border-bottom-style: none"> Prefix increment and decrement
+                            </td>
+                            <td style="vertical-align: top" rowspan="9"> Right-to-left
+                            </td></tr>
+                        <tr>
+                            <td style="border-bottom-style: none; border-top-style: none"> <code>+</code>   <code>−</code>
+                            </td>
+                            <td style="border-bottom-style: none; border-top-style: none"> Unary plus and minus
+                            </td></tr>
+                        <tr>
+                            <td style="border-bottom-style: none; border-top-style: none"> <code>!</code>   <code>~</code>
+                            </td>
+                            <td style="border-bottom-style: none; border-top-style: none"> Logical NOT and bitwise NOT
+                            </td></tr>
+                        <tr>
+                            <td style="border-bottom-style: none; border-top-style: none"> <code>(<i>type</i>)</code>
+                            </td>
+                            <td style="border-bottom-style: none; border-top-style: none"> Type cast
+                            </td></tr>
+                        <tr>
+                            <td style="border-bottom-style: none; border-top-style: none"> <code>*</code>
+                            </td>
+                            <td style="border-bottom-style: none; border-top-style: none"> Indirection (dereference)
+                            </td></tr>
+                        <tr>
+                            <td style="border-bottom-style: none; border-top-style: none"> <code>&amp;</code>
+                            </td>
+                            <td style="border-bottom-style: none; border-top-style: none"> Address-of
+                            </td></tr>
+                        <tr>
+                            <td style="border-bottom-style: none; border-top-style: none"> <code>sizeof</code>
+                            </td>
+                            <td style="border-bottom-style: none; border-top-style: none"> Size-of
+                            </td></tr>
+                        <tr>
+                            <td style="border-bottom-style: none; border-top-style: none"> <code>new</code>, <code>new[]</code>
+                            </td>
+                            <td style="border-bottom-style: none; border-top-style: none"> Dynamic memory allocation
+                            </td></tr>
+                        <tr>
+                            <td style="border-top-style: none"> <code>delete</code>, <code>delete[]</code>
+                            </td>
+                            <td style="border-top-style: none"> Dynamic memory deallocation
+                            </td></tr>
+                        <tr>
+                            <th> 4
+                            </th>
+                            <td> <code>.*</code>   <code>-&gt;*</code>
+                            </td>
+                            <td> Pointer to member
+                            </td>
+                            <td style="vertical-align: top" rowspan="12"> Left-to-right
+                            </td></tr>
+                        <tr>
+                            <th> 5
+                            </th>
+                            <td> <code>*</code>   <code>/</code>   <code>%</code>
+                            </td>
+                            <td> Multiplication, division, and remainder
+                            </td></tr>
+                        <tr>
+                            <th> 6
+                            </th>
+                            <td> <code>+</code>   <code>−</code>
+                            </td>
+                            <td> Addition and subtraction
+                            </td></tr>
+                        <tr>
+                            <th> 7
+                            </th>
+                            <td> <code>&lt;&lt;</code>   <code>&gt;&gt;</code>
+                            </td>
+                            <td> Bitwise left shift and right shift
+                            </td></tr>
+                        <tr>
+                            <th rowspan="2"> 8
+                            </th>
+                            <td style="border-bottom-style: none"> <code>&lt;</code>   <code>&lt;=</code>
+                            </td>
+                            <td style="border-bottom-style: none"> For relational operators &lt; and ≤ respectively
+                            </td></tr>
+                        <tr>
+                            <td style="border-top-style: none"> <code>&gt;</code>   <code>&gt;=</code>
+                            </td>
+                            <td style="border-top-style: none"> For relational operators &gt; and ≥ respectively
+                            </td></tr>
+                        <tr>
+                            <th> 9
+                            </th>
+                            <td> <code>==</code>   <code>!=</code>
+                            </td>
+                            <td> For relational = and ≠ respectively
+                            </td></tr>
+                        <tr>
+                            <th> 10
+                            </th>
+                            <td> <code>&amp;</code>
+                            </td>
+                            <td> Bitwise AND
+                            </td></tr>
+                        <tr>
+                            <th> 11
+                            </th>
+                            <td> <code>^</code>
+                            </td>
+                            <td> Bitwise XOR (exclusive or)
+                            </td></tr>
+                        <tr>
+                            <th> 12
+                            </th>
+                            <td> <code>|</code>
+                            </td>
+                            <td> Bitwise OR (inclusive or)
+                            </td></tr>
+                        <tr>
+                            <th> 13
+                            </th>
+                            <td> <code>&amp;&amp;</code>
+                            </td>
+                            <td> Logical AND
+                            </td></tr>
+                        <tr>
+                            <th> 14
+                            </th>
+                            <td> <code>||</code>
+                            </td>
+                            <td> Logical OR
+                            </td></tr>
+                        <tr>
+                            <th rowspan="6"> 15
+                            </th>
+                            <td style="border-bottom-style: none"> <code>?:</code>
+                            </td>
+                            <td style="border-bottom-style: none"> Ternary conditional
+                            </td>
+                            <td style="vertical-align: top" rowspan="7"> Right-to-left
+                            </td></tr>
+                        <tr>
+                            <td style="border-bottom-style: none; border-top-style: none"> <code>=</code>
+                            </td>
+                            <td style="border-bottom-style: none; border-top-style: none"> Direct assignment (provided by default for C++ classes)
+                            </td></tr>
+                        <tr>
+                            <td style="border-bottom-style: none; border-top-style: none"> <code>+=</code>   <code>−=</code>
+                            </td>
+                            <td style="border-bottom-style: none; border-top-style: none"> Assignment by sum and difference
+                            </td></tr>
+                        <tr>
+                            <td style="border-bottom-style: none; border-top-style: none"> <code>*=</code>   <code>/=</code>   <code>%=</code>
+                            </td>
+                            <td style="border-bottom-style: none; border-top-style: none"> Assignment by product, quotient, and remainder
+                            </td></tr>
+                        <tr>
+                            <td style="border-bottom-style: none; border-top-style: none"> <code>&lt;&lt;=</code>   <code>&gt;&gt;=</code>
+                            </td>
+                            <td style="border-bottom-style: none; border-top-style: none"> Assignment by bitwise left shift and right shift
+                            </td></tr>
+                        <tr>
+                            <td style="border-top-style: none"> <code>&amp;=</code>   <code>^=</code>   <code>|=</code>
+                            </td>
+                            <td style="border-top-style: none"> Assignment by bitwise AND, XOR, and OR
+                            </td></tr>
+                        <tr>
+                            <th> 16
+                            </th>
+                            <td> <code>throw</code>
+                            </td>
+                            <td> Throw operator (for exceptions)
+                            </td></tr>
+                        <tr>
+                            <th> 17
+                            </th>
+                            <td> <code>,</code>
+                            </td>
+                            <td> Comma
+                            </td>
+                            <td> Left-to-right
+                            </td></tr></table><br>
+
                     <h2><a id="functions"></a>Functions</h2>
                     <h2><a id="keywords"></a>Keywords</h2>
-                    <h2><a id="namespace"></a>Namespace</h2>
-                    <h2><a id="scope"></a>Scoping Rules</h2>
+                    <h2><a id="scope"></a>Scope</h2>
+                    <h2><a id="namespace"></a>Namespace</h2>                    
                     <h2><a id="classes"></a>Classes</h2>
                     <h2><a id="stdmembers"></a>Standard Type Members</h2>
                     <h2><a id="iterators"></a>Iterators</h2>
